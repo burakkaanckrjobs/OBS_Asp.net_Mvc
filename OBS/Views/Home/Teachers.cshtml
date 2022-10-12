@@ -1,0 +1,100 @@
+﻿@{
+    ViewData["Title"] = "Teachers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-8 mt-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Öğretmenler Listesi</h5>
+                    </div>
+                    <div class="card-body table-responsive">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead class="bg-dark text-light">
+                                <tr>
+                                    <th>Öğrenci Adı Soyadı</th>
+                                    <th>Düzenle</th>
+                                </tr>
+                            </thead>
+                            <tbody id="datalist">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mt-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Yeni Öğretmen <span id="FormTitle">Ekle</span></h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 mb-2">
+                                <input type="text" placeholder="Öğretmen Adı Soyadı" class="form-control" value="" id="TeacherName" />
+                                <input type="hidden" value="0" id="TeacherId" />
+                            </div>
+                            <div class="col-md-12 text-end">
+                                <button type="button" class="btn btn-success"  id="AddTeacher">Ekle</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        function GetAllTeacher() {
+            $.ajax({
+                url: '/Home/GetTeacherList',
+                success: function (data) {
+                    $('#datalist').empty();
+                    for (let i = 0; i < data.length; i++) {
+                        var html = `
+                                       <tr>
+                                               <td>${data[i].ogretmen_AdıSoyadı}</td>
+                                                               <td> <button class="btn btn-success" onclick="updateTeacher(${data[i].id})">Güncelle</button></td>
+
+                                       </tr>`;
+                        $('#datalist').append(html);
+                    }
+
+                }
+            })
+        }
+        $(document).ready(function () {
+            GetAllTeacher()
+        });
+        $('#AddTeacher').click(function () {
+            var name = $('#TeacherName').val();
+            var id = $('#TeacherId').val();
+            if (name == '') {
+                alert("Lütfen Tüm Alanları Doldurunuz");
+            }
+            $.ajax({
+                url: '/Home/AddOrUpdateTeacher',
+                data: { name: name, id: id },
+                success: function () {
+                    GetAllTeacher()
+                    $('#TeacherName').val('');
+                    $('#TeacherId').val(0);
+                    $('#AddTeacher').text("Ekle");
+                }
+            })
+        })
+        function updateTeacher(id){
+            $('#AddTeacher').text("Güncelle");
+            $.ajax({
+                url:'/Home/GetTeacherData',
+                data:{id:id},
+                success:function(data){
+                    $('#TeacherName').val(data.ogretmen_AdıSoyadı)
+                    $('#TeacherId').val(id)
+                }
+            })
+        }
+    </script>
+}

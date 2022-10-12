@@ -1,0 +1,274 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-8 mt-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Öğrenci Listesi</h5>
+                    </div>
+                    <div class="card-body table-responsive">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead class="bg-dark text-light">
+                                <tr>
+                                    <th>Düzenle</th>
+                                    <th>Öğrenci Adı</th>
+                                    <th>Öğrenci Soyadı</th>
+                                    <th>Öğrenci Yaşı</th>
+                                    <th>Şehir</th>
+                                    <th>İl</th>
+                                    <th>Grup</th>
+                                    <th>Hobiler</th>
+                                    <th>Rehber Öğretmen</th>
+                                    <th>Sınıf Öğretmeni</th>
+
+                                </tr>
+                            </thead>
+                            <tbody id="dataList">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mt-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Yeni Öğrenci <span id="FormTitle">Ekle</span></h5>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="AddOrUpdateStudent" asp-controller="Home"
+                              data-ajax="true" data-ajax-method="POST"
+                              data-ajax-success="OnSuccess">
+                            <div class="row">
+                                <div class="col-12 mb-2">
+                                    <input type="hidden" value="0" name="id" id="studentId" />
+                                    <input type="text" placeholder="Öğrenci Adı" class="form-control" value="" name="Ogrenci_Adı" id="StudentName" />
+                                </div>
+                                <div class="col-12 mb-2">
+                                    <input type="text" placeholder="Öğrenci Soyadı" class="form-control" name="Ogrenci_Soyad" value="" id="StudentSurname" />
+                                </div>
+                                <div class="col-12 mb-2">
+                                    <input type="number" name="Ogrenci_Yas" placeholder="Öğrenci Yaşı" class="form-control" value="" id="StudentAge" />
+                                </div>
+                                <div class="col-12 mb-2">
+                                    <select class="form-select" name="Sehir" id="Citys">
+                                    </select>
+                                </div>
+                                <div class="col-12 mb-2">
+                                    <select class="form-select" name="ilce" id="disctrict">
+                                    </select>
+                                </div>
+                                <div class="col-12 mb-2">
+                                    <input type="text" name="grup" placeholder="Öğrenci Grup" class="form-control" value="" id="StudentGroup" />
+                                </div>
+                                <div class="col-12 mb-2">
+                                    <textarea class="form-control" id="hobby" name="hobiler" placeholder="Hobiler"></textarea>
+                                </div>
+                                <div class="col-12 mb-2">
+                                    <select class="form-select" name="Rehber_Ogretmen" id="GuideTeacher">
+                                    </select>
+                                </div>
+                                <div class="col-12 mb-2">
+                                    <select class="form-select" name="Sınıf_Ogretmeni" id="classroomTeacher">
+                                    </select>
+                                </div>
+                                <div class="col-md-12 text-end">
+                                    <button type="submit" class="btn btn-success" id="AddOrUpdateBtn">Ekle</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+
+        //Şehir Dropdwon Tıklandıgı zaman Yapılcak Listeler
+        function GetCityList() {
+            $.ajax({
+                url: '/Home/GetCityList',
+                success: function (data) {
+                    $('#Citys').empty();
+                    $('#Citys').append('<option value="0">Seçiniz</option>')
+                    for (let i = 0; i < data.length; i++) {
+                        $('#Citys').append('<option value="' + data[i].id + '">' + data[i].sehiradi + '</option>')
+                    }
+                }
+            })
+        }
+        //İlçe Dropdwon Tıklandıgı zaman Yapılcak Listeler
+        function GetDisctrictList() {
+            $.ajax({
+                url: '/Home/GetDisctrictList',
+                success: function (data) {
+                    $('#disctrict').empty();
+                    $('#disctrict').append('<option value="0">Seçiniz</option>')
+                    for (let i = 0; i < data.length; i++) {
+                        $('#disctrict').append('<option value="' + data[i].id + '">' + data[i].ilceadi + '</option>')
+                    }
+                }
+            })
+        }
+        //Ögretmen  Dropdwon Tıklandıgı zaman Yapılcak Listeler
+        function GetTeacherList() {
+            $.ajax({
+                url: '/Home/GetTeacherList',
+                success: function (data) {
+                    $('#classroomTeacher').empty();
+                    $('#GuideTeacher').empty();
+
+                    $('#classroomTeacher').append('<option value="0">Seçiniz</option>')
+                    for (let i = 0; i < data.length; i++) {
+                        $('#classroomTeacher').append('<option value="' + data[i].id + '">' + data[i].ogretmen_AdıSoyadı + '</option>')
+                    }
+
+                    $('#GuideTeacher').append('<option value="0">Seçiniz</option>')
+                    for (let i = 0; i < data.length; i++) {
+                        $('#GuideTeacher').append('<option value="' + data[i].id + '">' + data[i].ogretmen_AdıSoyadı + '</option>')
+                    }
+
+                }
+            })
+        }
+        //Veritabanındaki Bilgilerin Listeye Aktarma 
+        function GetStudentList() {
+            $.ajax({
+                url: '/Home/GetStudentList',
+                success: function (data) {
+                    console.log(data);
+                    $('#dataList').empty();
+                    for (let i = 0; i < data.ogrencis.length; i++) {
+                        var html = `<tr>
+                                                                    <td><button class="btn btn-success" onclick="UpdateStudent(${data.ogrencis[i].id})">Güncelle</button></td>
+                                                                    <td>${data.ogrencis[i].ogrenci_adı}</td>
+                                                                    <td>${data.ogrencis[i].ogrenci_soyadı}</td>
+                                                                    <td>${data.ogrencis[i].ogrenci_yas}</td>
+                                                                    <td>${data.ogrencis[i].sehir}</td>
+                                                                    <td>${data.ogrencis[i].ilce}</td>
+                                                                    <td>${data.ogrencis[i].group}</td>
+                                                                    <td>${data.ogrencis[i].hobiler}</td>
+                                                                    <td>${data.ogrencis[i].rehberOgretmen}</td>
+                                                                    <td>${data.ogrencis[i].sınıfOgretmeni}</td>
+                                                                </tr>`;
+                        $('#dataList').append(html);
+                    }
+                }
+            })
+        }
+
+           //Listedeki Verilerin Güncelleeme İşlemi Bu Bölümde yapılıyor
+
+        function UpdateStudent(id) {
+            $.ajax({
+                url: '/Home/UpdateStudent',
+                data: { id: id },
+                success: function (data) {
+                    console.log(data)
+                    $('#AddOrUpdateBtn').text('Güncelle');
+                    $('#studentId').val(data.ogrenci.id);
+                    $('#StudentName').val(data.ogrenci.ogrenci_Adı);
+                    $('#StudentSurname').val(data.ogrenci.ogrenci_Soyad);
+                    $('#StudentAge').val(data.ogrenci.ogrenci_Yas);
+                    $('#StudentGroup').val(data.ogrenci.grup);
+                    $('#hobby').val(data.ogrenci.hobiler);
+
+                    $('#Citys').empty();
+                    $('#Citys').append('<option value="0">Seçiniz</option>')
+                    for (let i = 0; i < data.İllers.length; i++) {
+                        if (data.İllers[i].id == data.ogrenci.sehir) {
+                            $('#Citys').append('<option value="' + data.İllers[i].id + '" selected>' + data.İllers[i].sehiradi + '</option>')
+                        }
+                        else {
+                            $('#Citys').append('<option value="' + data.İllers[i].id + '">' + data.İllers[i].sehiradi + '</option>')
+                        }
+                    }
+
+                    $('#disctrict').empty();
+                    $('#disctrict').append('<option value="0">Seçiniz</option>')
+                    for (let i = 0; i < data.İlcelers.length; i++) {
+                        if (data.İlcelers[i].id == data.ogrenci.ilce) {
+                            $('#disctrict').append('<option value="' + data.İlcelers[i].id + '" selected>' + data.İlcelers[i].ilceadi + '</option>')
+                        }
+                        else {
+                            $('#disctrict').append('<option value="' + data.İlcelers[i].id + '">' + data.İlcelers[i].ilceadi + '</option>')
+                        }
+
+                    }
+
+                    $('#classroomTeacher').empty();
+                    $('#GuideTeacher').empty();
+
+                    $('#classroomTeacher').append('<option value="0">Seçiniz</option>')
+                    for (let i = 0; i < data.ogretmens.length; i++) {
+                        if (data.ogretmens[i].id == data.ogrenci.sınıf_Ogretmeni) {
+                            $('#classroomTeacher').append('<option value="' + data.ogretmens[i].id + '" selected>' + data.ogretmens[i].ogretmen_AdıSoyadı + '</option>')
+                        }
+                        else{
+                            $('#classroomTeacher').append('<option value="' + data.ogretmens[i].id + '">' + data.ogretmens[i].ogretmen_AdıSoyadı + '</option>')
+                        }
+                    }
+
+                    $('#GuideTeacher').append('<option value="0">Seçiniz</option>')
+                    for (let i = 0; i < data.ogretmens.length; i++) {
+                        if (data.ogretmens[i].id == data.ogrenci.rehber_Ogretmen) {
+                            $('#GuideTeacher').append('<option value="' + data.ogretmens[i].id + '" selected>' + data.ogretmens[i].ogretmen_AdıSoyadı + '</option>')
+                        }
+                        else {
+                            $('#GuideTeacher').append('<option value="' + data.ogretmens[i].id + '">' + data.ogretmens[i].ogretmen_AdıSoyadı + '</option>')
+                        }
+
+                    }
+
+
+                }
+            })
+        }
+        $(document).ready(function () {
+            GetDisctrictList();
+            GetCityList();
+            GetTeacherList();
+            GetStudentList()
+        })
+        $('#Citys').change(function () {
+            var cityId = $('#Citys').val();
+            $.ajax({
+                url: '/Home/GetDistrictByCity',
+                data: { cityId: cityId },
+                success: function (data) {
+                    $('#disctrict').empty();
+                    $('#disctrict').append('<option value="0">Seçiniz</option>')
+                    for (let i = 0; i < data.length; i++) {
+                        $('#disctrict').append('<option value="' + data[i].id + '">' + data[i].ilceadi + '</option>')
+                    }
+                }
+            })
+        })
+        function OnSuccess() {
+            GetStudentList()
+            TextClear();;
+        }
+
+
+            //Form Temizleme Bölümü 
+
+        function TextClear() {
+            $('#studentId').val(0);
+            $('#StudentName').val('');
+            $('#StudentSurname').val('');
+            $('#StudentAge').val('');
+            $('#StudentGroup').val('');
+            $('#hobby').val('');
+            $("#Citys").val("0").change();
+            $("#disctrict").val("0").change();
+            $("#GuideTeacher").val("0").change();
+            $("#classroomTeacher").val("0").change();
+            $('#AddOrUpdateBtn').text('Ekle');
+        }
+    </script>
+}
