@@ -24,7 +24,6 @@
                                     <th>Hobiler</th>
                                     <th>Rehber Öğretmen</th>
                                     <th>Sınıf Öğretmeni</th>
-
                                 </tr>
                             </thead>
                             <tbody id="dataList">
@@ -88,8 +87,6 @@
 </div>
 @section Scripts{
     <script>
-
-        //Şehir Dropdwon Tıklandıgı zaman Yapılcak Listeler
         function GetCityList() {
             $.ajax({
                 url: '/Home/GetCityList',
@@ -102,7 +99,6 @@
                 }
             })
         }
-        //İlçe Dropdwon Tıklandıgı zaman Yapılcak Listeler
         function GetDisctrictList() {
             $.ajax({
                 url: '/Home/GetDisctrictList',
@@ -115,7 +111,6 @@
                 }
             })
         }
-        //Ögretmen  Dropdwon Tıklandıgı zaman Yapılcak Listeler
         function GetTeacherList() {
             $.ajax({
                 url: '/Home/GetTeacherList',
@@ -132,11 +127,9 @@
                     for (let i = 0; i < data.length; i++) {
                         $('#GuideTeacher').append('<option value="' + data[i].id + '">' + data[i].ogretmen_AdıSoyadı + '</option>')
                     }
-
                 }
             })
         }
-        //Veritabanındaki Bilgilerin Listeye Aktarma 
         function GetStudentList() {
             $.ajax({
                 url: '/Home/GetStudentList',
@@ -161,9 +154,6 @@
                 }
             })
         }
-
-           //Listedeki Verilerin Güncelleeme İşlemi Bu Bölümde yapılıyor
-
         function UpdateStudent(id) {
             $.ajax({
                 url: '/Home/UpdateStudent',
@@ -253,10 +243,6 @@
             GetStudentList()
             TextClear();;
         }
-
-
-            //Form Temizleme Bölümü 
-
         function TextClear() {
             $('#studentId').val(0);
             $('#StudentName').val('');
