@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\burak\\Desktop\\Odev\\Odev\\OBS.csproj": {}
+    "C:\\Users\\burak\\Desktop\\Bionluk OBS PROJE\\Odev\\Odev\\OBS.csproj": {}
   },
   "projects": {
-    "C:\\Users\\burak\\Desktop\\Odev\\Odev\\OBS.csproj": {
+    "C:\\Users\\burak\\Desktop\\Bionluk OBS PROJE\\Odev\\Odev\\OBS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\burak\\Desktop\\Odev\\Odev\\OBS.csproj",
+        "projectUniqueName": "C:\\Users\\burak\\Desktop\\Bionluk OBS PROJE\\Odev\\Odev\\OBS.csproj",
         "projectName": "OBS",
-        "projectPath": "C:\\Users\\burak\\Desktop\\Odev\\Odev\\OBS.csproj",
+        "projectPath": "C:\\Users\\burak\\Desktop\\Bionluk OBS PROJE\\Odev\\Odev\\OBS.csproj",
         "packagesPath": "C:\\Users\\burak\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\burak\\Desktop\\Odev\\Odev\\obj\\",
+        "outputPath": "C:\\Users\\burak\\Desktop\\Bionluk OBS PROJE\\Odev\\Odev\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

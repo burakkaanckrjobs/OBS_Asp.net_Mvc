@@ -27,6 +27,8 @@ namespace Odev.Controllers
 
             foreach (var item in ogrenciList)
             {
+                //Yeni bir Student obj oluşturup  Veri Tabanından  Bilgileri Çekiyoruz
+
                 Student students = new Student()
                 {
                     group = item.grup,
@@ -45,8 +47,10 @@ namespace Odev.Controllers
 
             return Json(student);
         }
+        //JsonResult, elimizdeki modeli bize JSON(JavaScript Object Notation) veri yapısında geri döndürmemizi sağlayan bir tiptir.
         public JsonResult UpdateStudent(int id)
         {
+            //
             StudentVM student = new StudentVM();
             student.Ogrenci= _context.Ogrenci_Tbl.Where(x => x.id == id).FirstOrDefault();
             student.Ogretmens = _context.Ogretmen_Tbl.ToList();
@@ -60,6 +64,7 @@ namespace Odev.Controllers
         }
         public JsonResult GetTeacherList()
         {
+            // Ögretem Tablosunu Veritabanından Çekme İşlemi Gerçekleşir
             var result = _context.Ogretmen_Tbl.ToList();
             return Json(result);
         }
@@ -75,6 +80,7 @@ namespace Odev.Controllers
                 var result = _context.Ogretmen_Tbl.Where(x => x.id == id).FirstOrDefault();
                 result.Ogretmen_AdıSoyadı = name;
                 _context.SaveChanges();
+
             }
             else
             {
@@ -87,6 +93,7 @@ namespace Odev.Controllers
             }
             return Json(1);
         }
+        // Şehir Tablosunu Veritabanından Çekme İşlemi Gerçekleşir
         public JsonResult GetCityList()
         {
             var result = _context.iller.ToList();
@@ -102,6 +109,8 @@ namespace Odev.Controllers
             var result = _context.ilceler.Where(x => x.sehirid == cityId).ToList();
             return Json(result);
         }
+
+        //From Ögrenci Veri tablosunun Güncellemek için 
         public JsonResult AddOrUpdateStudent(Ogrenci ogrenci)
         {
             if (ogrenci.id > 0)

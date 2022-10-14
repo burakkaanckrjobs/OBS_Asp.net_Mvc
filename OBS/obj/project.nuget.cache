@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "gzsqYyE8riIwbM0/e/EvtlxjiySPBULWqMAUdjMzR0jIRMbJSrZH4smpwnyn+sdOka/hXzm1cnvDZMvtN2OBTA==",
+  "dgSpecHash": "7Ksd9/U1gqnPFZ7jIuw7WYdzXXSteioW75XeQT8jqHQTgxNMMf859LNCXHfRL/MTo3x3Pq1hkSH2lR9VOOjKuw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\burak\\Desktop\\Odev\\Odev\\OBS.csproj",
+  "projectFilePath": "C:\\Users\\burak\\Desktop\\Bionluk OBS PROJE\\Odev\\Odev\\OBS.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\burak\\.nuget\\packages\\bootstrap\\5.2.1\\bootstrap.5.2.1.nupkg.sha512",
     "C:\\Users\\burak\\.nuget\\packages\\humanizer.core\\2.2.0\\humanizer.core.2.2.0.nupkg.sha512",
